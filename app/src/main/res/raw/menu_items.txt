@@ -1,0 +1,29 @@
+{"foodItems": [
+	{
+	name:"Goku Ramen",
+	price:12.70,
+	description:"Chinese-style wheat noodles served in a meat broth, flavored with miso, and added with toppings such as sliced pork (叉焼 chāshū), dried seaweed (海苔 nori), menma (麺麻), and green onions (葱 negi)."
+	}, 
+	{
+	name:"Omurice",
+	price:10.30,
+	description:"Pan-fried rice with ketchup and chicken, wrapped in a soft and runny sheet of fried egg, topped with flavored beef gravy."
+	},
+	{
+	name:"Tamakoyaki",
+	price:8,
+	description:"Japanese omelette, made by rolling together several layers of cooked egg. Egg mixture include eggs, sugar, and soy sauce"
+	},
+	{
+	name:"Tempura",
+	price:9.80,
+	description: "Pieces of lightly battered, deep fried seafood and vegetables. Ingredients include eggplant, mushroom, pumpkin, shrimp, Sakana fish."
+	},
+	{
+	name:"Tonkotsu Ramen",
+	price:13.40,
+	description:"Soup broth based upon pork bones and vegetables, boiled for eight hours, and served with ramen noodles that are hard in the center, finished with sliced pork belly, green onions, and house made spicy sauce."
+	}
+]
+
+}

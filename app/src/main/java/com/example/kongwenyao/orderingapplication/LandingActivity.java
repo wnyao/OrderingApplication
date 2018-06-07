@@ -1,17 +1,18 @@
 package com.example.kongwenyao.orderingapplication;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.view.Gravity;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -19,8 +20,8 @@ import java.util.Map;
 public class LandingActivity extends AppCompatActivity implements View.OnClickListener {
 
     Map<String, Integer> foodItems;
-
-    public static final String PREFS_NAME = "PREFS_FILE";
+    public static final String INTENT_FOODNAME = "CARD_NAME";
+    public static final String INTENT_ID = "DRAWABLE_ID";
 
 
     @Override
@@ -38,6 +39,13 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; adds items to the action bar
+        getMenuInflater().inflate(R.menu.menu, menu);
+        return true;
+    }
+
     private void loadData() throws IllegalAccessException {
         LinearLayout linearLayout = findViewById(R.id.linear_layout);
         CardView cardView;
@@ -48,7 +56,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
         for (String key: foodItems.keySet()) {
             //Create Views
-            cardView = createCardView();  //TODO
+            cardView = createCardView();
             imageView = createImageView(foodItems.get(key));
             textView = createTextView(key);
 
@@ -153,16 +161,19 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View v) {
         String foodName;
+        int drawableID;
 
         if (v instanceof CardView) {
             for (int i = 0; i < ((CardView) v).getChildCount(); i++) {
                 if (((CardView) v).getChildAt(i) instanceof TextView) {
                     //Get food name
                     foodName = (String) ((TextView) ((CardView) v).getChildAt(i)).getText();
+                    drawableID = foodItems.get(foodName);
 
                     //Launch food item info activity
                     Intent intent = new Intent(this, ItemInfoActivity.class);
-                    intent.putExtra("CARD_NAME",foodName); //Pass food name to info activity
+                    intent.putExtra(INTENT_FOODNAME,foodName); //Pass food name to info activity
+                    intent.putExtra(INTENT_ID, drawableID); //Pass drawable ID to info activity
                     startActivity(intent);
                 }
             }

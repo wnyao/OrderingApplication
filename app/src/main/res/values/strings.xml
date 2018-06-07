@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">OrderingApplication</string>
+    <string name="img_content_description">FoodItemImage</string>
+    <string name="cart_menu">Cart</string>
 </resources>
