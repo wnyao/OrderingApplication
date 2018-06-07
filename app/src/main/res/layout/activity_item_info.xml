@@ -10,20 +10,20 @@
         android:id="@+id/image_view"
         android:layout_width="match_parent"
         android:layout_height="280dp"
+        android:contentDescription="@string/img_content_description"
         android:foreground="@drawable/shape_gradient1"
         android:scaleType="centerCrop"
         android:src="@drawable/item_omurice"
         app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toTopOf="parent"
-        android:contentDescription="@string/img_content_description" />
+        app2:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/title_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:textColor="@color/colorBlack"
         android:textSize="34sp"
         android:textStyle="bold"
@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="304dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="32dp"
         android:textSize="34sp"
         android:textStyle="bold"
         app2:layout_constraintEnd_toEndOf="parent"
@@ -49,12 +49,56 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="16dp"
         android:padding="24dp"
         android:textSize="18sp"
         app2:layout_constraintEnd_toEndOf="parent"
         app2:layout_constraintStart_toStartOf="parent"
         app2:layout_constraintTop_toBottomOf="@+id/title_textView" />
+
+    <TextView
+        android:id="@+id/amount_label_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginStart="24dp"
+        android:padding="15dp"
+        android:text="@string/amount_label"
+        android:textColor="@color/colorBlack"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/amount_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:padding="15dp"
+        android:text="1"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintEnd_toStartOf="@+id/appCompatButton"
+        app2:layout_constraintHorizontal_bias="0.0"
+        app2:layout_constraintStart_toEndOf="@+id/amount_label_textView" />
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/appCompatButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="24dp"
+        android:layout_marginEnd="22dp"
+        android:background="@color/colorBlack"
+        android:elevation="4dp"
+        android:padding="15dp"
+        android:text="@string/add_to_cart"
+        android:textColor="@color/colorWhite"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        app2:layout_constraintBottom_toBottomOf="parent"
+        app2:layout_constraintEnd_toEndOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

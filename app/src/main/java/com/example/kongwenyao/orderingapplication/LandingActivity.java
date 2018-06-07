@@ -5,6 +5,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
+import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.View;
@@ -29,6 +30,10 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
+        //Custom Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        toolbar.setTitle("");
+        setSupportActionBar(toolbar);
 
         //Load initiate data
         try {
@@ -38,6 +43,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         }
 
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -110,12 +116,11 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     //Create new CardView with specified layout parameters
     private CardView createCardView() {
         CardView cardView = new CardView(this);
-
         CardView.LayoutParams layoutParams = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
         //Layout Parameters
-        layoutParams.setMargins(30, 20, 30, 20);
+        layoutParams.setMargins(30, 50, 30, 0);
         cardView.setLayoutParams(layoutParams);
         cardView.setCardElevation(10);
         cardView.setRadius(10);
@@ -126,7 +131,6 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     //Create new ImageView with specified layout parameters
     private ImageView createImageView(int drawableID) {
         ImageView imageView = new ImageView(this);
-
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 500);
 
         //Layout Parameters
