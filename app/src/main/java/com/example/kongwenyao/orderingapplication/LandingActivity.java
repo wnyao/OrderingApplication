@@ -7,6 +7,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -16,6 +17,9 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import org.json.JSONException;
+
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
@@ -23,6 +27,7 @@ import java.util.Map;
 public class LandingActivity extends AppCompatActivity implements View.OnClickListener {
 
     Map<String, Integer> foodItems;
+    ItemInfoActivity itemInfoActivity;
     public static final String INTENT_FOODNAME = "CARD_NAME";
     public static final String INTENT_ID = "DRAWABLE_ID";
 
@@ -32,6 +37,9 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
+        //Instance
+        itemInfoActivity = new ItemInfoActivity();
+
         //Custom Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -40,7 +48,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         //Load initiate data
         try {
             loadData();
-        } catch (IllegalAccessException e) {
+        } catch (IllegalAccessException | JSONException | IOException e) {
             e.printStackTrace();
         }
 
@@ -82,7 +90,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     //Load all menu data for display
-    private void loadData() throws IllegalAccessException {
+    private void loadData() throws IllegalAccessException, IOException, JSONException {
         LinearLayout linearLayout = findViewById(R.id.linear_layout);
         CardView cardView;
         ImageView imageView;
@@ -90,11 +98,15 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
         foodItems = getFoodsID();
 
+        double foodPrice;
         for (String key: foodItems.keySet()) {
+            //Get food Price
+            foodPrice = itemInfoActivity.getFoodItemInfo(key, getResources());
+
             //Create Views
             cardView = createCardView();
             imageView = createImageView(foodItems.get(key));
-            textView = createTextView(key);
+            textView = createTextView(key, foodPrice); //key is the food name
 
             //ViewGroup add views
             cardView.addView(imageView);
@@ -173,7 +185,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     //Create new TextView with specified layout parameters
-    private TextView createTextView(String name) {
+    private TextView createTextView(String name, double price) {
         TextView textView = new TextView(this);
 
         CardView.LayoutParams layoutParams = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -182,7 +194,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         //Layout parameters
         layoutParams.setMargins(50, 0, 0, 0);
         textView.setLayoutParams(layoutParams);
-        textView.setText(name);
+        textView.setText(name + " | $" + String.valueOf(price));
         textView.setTextColor(this.getColor(R.color.colorWhite));
         textView.setTextSize(24);
         textView.setElevation(10);
@@ -194,14 +206,18 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public void onClick(View v) {
-        String foodName;
+        String foodName, string;
+        String[] words;
         int drawableID;
 
         if (v instanceof CardView) {
             for (int i = 0; i < ((CardView) v).getChildCount(); i++) {
                 if (((CardView) v).getChildAt(i) instanceof TextView) {
                     //Get food name
-                    foodName = (String) ((TextView) ((CardView) v).getChildAt(i)).getText();
+                    string = (String) ((TextView) ((CardView) v).getChildAt(i)).getText();
+                    words = string.split("\\|");
+                    foodName = words[0].trim(); //Trim away trailing whitespace
+
                     drawableID = foodItems.get(foodName);
 
                     //Launch food item info activity

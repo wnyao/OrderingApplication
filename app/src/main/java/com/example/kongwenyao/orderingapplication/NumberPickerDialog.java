@@ -16,6 +16,7 @@ public class NumberPickerDialog extends DialogFragment {
 
         //Create new number picker widget
         final NumberPicker numberPicker = new NumberPicker(getActivity());
+        numberPicker.setValue(1);
         numberPicker.setMinValue(1);
         numberPicker.setMaxValue(10);
         numberPicker.setDescendantFocusability(NumberPicker.FOCUS_BEFORE_DESCENDANTS); //Turn off keyboard
@@ -38,7 +39,6 @@ public class NumberPickerDialog extends DialogFragment {
         alertDialog.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                //do nothing on cancel
             }
         });
 

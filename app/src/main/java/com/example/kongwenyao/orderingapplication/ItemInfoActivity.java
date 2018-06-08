@@ -1,6 +1,7 @@
 package com.example.kongwenyao.orderingapplication;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
@@ -25,8 +26,8 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     AppCompatButton addButton;
 
     String itemName, itemDescription;
-    int drawableID, itemPrice;
-    int itemAmount;
+    int drawableID, itemAmount;
+    Double itemPrice;
 
     public static final String INTENT_MESSAGE = "NOTICE";
 
@@ -54,7 +55,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
 
         //Get Food Price and Description
         try {
-            getFoodItemInfo(itemName);
+            getFoodItemInfo(itemName, getResources());
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
@@ -63,10 +64,8 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         displaySetup();
     }
 
-
-
     private void displaySetup() {
-        String price = "$" + Integer.toString(itemPrice);
+        String price = "$" + Double.toString(itemPrice);
         priceView.setText(price);
         titleView.setText(itemName);
         imageView.setImageResource(drawableID);
@@ -74,8 +73,8 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Get JSON Object via reference ID of raw resources
-    private JSONObject getJsonObject(int referenceID) throws IOException, JSONException {
-        InputStream inputStream = getResources().openRawResource(referenceID);
+    private JSONObject getJsonObject(int referenceID, Resources resources) throws IOException, JSONException {
+        InputStream inputStream = resources.openRawResource(referenceID);
         BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(inputStream));
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -88,18 +87,20 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     //Get food item information through JSON
-    private void getFoodItemInfo(String itemName) throws IOException, JSONException {
-        JSONArray itemsInfo = getJsonObject(R.raw.menu_items).getJSONArray("foodItems");
+    public double getFoodItemInfo(String itemName, Resources resources) throws IOException, JSONException {
+        JSONArray itemsInfo = getJsonObject(R.raw.menu_items, resources).getJSONArray("foodItems");
         JSONObject infoObj;
 
         for (int i = 0; i < itemsInfo.length(); i++) {
             infoObj = itemsInfo.getJSONObject(i);
 
             if (infoObj.getString("name").equalsIgnoreCase(itemName)) {
-                itemPrice = infoObj.getInt("price"); //get food price
+                itemPrice = infoObj.getDouble("price"); //get food price
                 itemDescription = infoObj.getString("description"); //get description
             }
         }
+
+        return itemPrice;
     }
 
     @Override
