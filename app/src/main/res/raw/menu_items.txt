@@ -12,7 +12,7 @@
 	{
 	name:"Tamakoyaki",
 	price:8.00,
-	description:"Japanese omelette, made by rolling together several layers of cooked egg. Egg mixture include eggs, sugar, and soy sauce"
+	description:"Japanese omelette, made by rolling together several layers of cooked egg. Egg mixtures include eggs, sugar, and soy sauce"
 	},
 	{
 	name:"Tempura",

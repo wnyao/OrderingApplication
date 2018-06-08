@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp"
+    android:orientation="vertical">
+
+    <!-- Background -->
+    <RelativeLayout
+        android:id="@+id/relative_background"
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        android:background="@color/colorBlack">
+
+        <ImageView
+            android:id="@+id/icon_delete"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:src="@drawable/icon_delete"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="14dp"
+            />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/delete"
+            android:textAllCaps="true"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/icon_delete"
+            android:textColor="@color/colorWhite"
+            android:textSize="14sp"
+            android:textStyle="bold"/>
+
+    </RelativeLayout>
+
+    <!-- Foreground -->
+    <RelativeLayout
+        android:id="@+id/relative_foreground"
+        android:layout_height="100dp"
+        android:layout_width="match_parent"
+        android:background="@color/colorWhite"
+        android:padding="10dp">
+
+        <TextView
+            android:id="@+id/name_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample"
+            android:layout_margin="16dp"
+            android:textColor="@color/colorBlack"
+            android:layout_centerVertical="true"
+            android:layout_alignParentStart="true"
+            android:textSize="17sp"/>
+
+        <TextView
+            android:id="@+id/amountLabel_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/amount_label"
+            android:textColor="@color/colorBlack"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/amount_textView"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/amount_textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/sample"
+            android:layout_margin="16dp"
+            android:textColor="@color/colorBlack"
+            android:layout_centerVertical="true"
+            android:layout_toStartOf="@id/price_textView"
+            android:textSize="17sp" />
+
+        <TextView
+            android:id="@+id/price_textView"
+            android:layout_width="60dp"
+            android:layout_height="wrap_content"
+            android:text="@string/sample"
+            android:layout_margin="16dp"
+            android:textColor="@color/colorBlack"
+            android:layout_centerVertical="true"
+            android:layout_alignParentEnd="true"
+            android:textSize="17sp" />
+
+    </RelativeLayout>
+
+</FrameLayout>

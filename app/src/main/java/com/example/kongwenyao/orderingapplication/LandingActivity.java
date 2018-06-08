@@ -1,13 +1,13 @@
 package com.example.kongwenyao.orderingapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -26,11 +26,10 @@ import java.util.Map;
 
 public class LandingActivity extends AppCompatActivity implements View.OnClickListener {
 
-    Map<String, Integer> foodItems;
-    ItemInfoActivity itemInfoActivity;
+    private Map<String, Integer> foodItems;
+    private ItemInfoActivity itemInfoActivity;
     public static final String INTENT_FOODNAME = "CARD_NAME";
     public static final String INTENT_ID = "DRAWABLE_ID";
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,8 +65,14 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
             //Notify user on added amount
             Snackbar snackbar = Snackbar.make(findViewById(R.id.parent_linear_layout), message, Snackbar.LENGTH_LONG);
             snackbar.show();
+
+            //Remove extra
+            intent.removeExtra(ItemInfoActivity.INTENT_MESSAGE);
         }
 
+        //Get total number of item picked
+        SharedPreferences sharedPreferences = getSharedPreferences(ItemInfoActivity.PREFS_FILE, 0);
+        ItemInfoActivity.TOTAL_ITEM = sharedPreferences.getInt(ItemInfoActivity.TOTAL_ITEM_KEY, 0);
     }
 
     @Override
@@ -120,14 +125,14 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
     //Get dictionary that contain all food name and its drawable reference id
     private Map<String, Integer> getFoodsID() throws IllegalAccessException {
-        Field[] fieldIDs = R.drawable.class.getFields(); //get all id from image files within drawable
+        Field[] fieldIDs = R.drawable.class.getFields(); //Get all id from image files within drawable
         Map<String, Integer> foodItems = new HashMap<>();
         String fileName;
         String foodName;
         int referenceID;
 
         for (Field id:fieldIDs) {
-            fileName = id.getName(); //get image filename
+            fileName = id.getName(); //Get image filename
             referenceID = id.getInt(null);
 
             if (fileName.split("_")[0].equals("item")) {
@@ -194,7 +199,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         //Layout parameters
         layoutParams.setMargins(50, 0, 0, 0);
         textView.setLayoutParams(layoutParams);
-        textView.setText(name + " | $" + String.valueOf(price));
+        textView.setText(name + " | $" + String.format("%.2f", price));
         textView.setTextColor(this.getColor(R.color.colorWhite));
         textView.setTextSize(24);
         textView.setElevation(10);
@@ -216,7 +221,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
                     //Get food name
                     string = (String) ((TextView) ((CardView) v).getChildAt(i)).getText();
                     words = string.split("\\|");
-                    foodName = words[0].trim(); //Trim away trailing whitespace
+                    foodName = words[0].trim(); //Trim away the trailing whitespace
 
                     drawableID = foodItems.get(foodName);
 

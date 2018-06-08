@@ -1,10 +1,12 @@
 package com.example.kongwenyao.orderingapplication;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
@@ -21,15 +23,18 @@ import java.io.InputStreamReader;
 
 public class ItemInfoActivity extends AppCompatActivity implements View.OnClickListener, NumberPicker.OnValueChangeListener {
 
-    ImageView imageView;
-    TextView titleView, priceView, descriptionView, amountTextView;
-    AppCompatButton addButton;
+    private ImageView imageView;
+    private TextView titleView, priceView, descriptionView, amountTextView;
 
-    String itemName, itemDescription;
-    int drawableID, itemAmount;
-    Double itemPrice;
+    private String itemName, itemDescription;
+    private int drawableID, itemAmount = 1;
+    private Double itemPrice;
 
+    public static int TOTAL_ITEM;
     public static final String INTENT_MESSAGE = "NOTICE";
+
+    public static final String PREFS_FILE = "PREFS_FILE"; //Preferences file for sharing the total of cart items
+    public static final String TOTAL_ITEM_KEY = "TOTAL_ITEM"; //Key for total item
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,13 +47,13 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         titleView = findViewById(R.id.title_textView);
         descriptionView = findViewById(R.id.description_textView);
         amountTextView = findViewById(R.id.amount_textView);
-        addButton = findViewById(R.id.addToCart_button);
+        AppCompatButton addButton = findViewById(R.id.addToCart_button);
 
         //Event Listener
         addButton.setOnClickListener(this);
         amountTextView.setOnClickListener(this);
 
-        //Get intent messages
+        //Get name and drawable ID for item
         Intent intent = getIntent();
         itemName = intent.getStringExtra(LandingActivity.INTENT_FOODNAME);
         drawableID = intent.getIntExtra(LandingActivity.INTENT_ID, 0);
@@ -60,12 +65,22 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
             e.printStackTrace();
         }
 
-        //Set up all information
+        //Set up information related to the item
         displaySetup();
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        //Store number of total item picked
+        SharedPreferences.Editor sharedPreferences = getSharedPreferences(PREFS_FILE, 0).edit();
+        sharedPreferences.putInt(TOTAL_ITEM_KEY, TOTAL_ITEM);
+        sharedPreferences.apply();
+    }
+
     private void displaySetup() {
-        String price = "$" + Double.toString(itemPrice);
+        String price = "$" + String.format("%.2f", itemPrice);
         priceView.setText(price);
         titleView.setText(itemName);
         imageView.setImageResource(drawableID);
@@ -116,19 +131,27 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
 
         } else if (viewID == R.id.addToCart_button) {
             message = itemAmount + " " + itemName + "has added to cart.";
+            TOTAL_ITEM += 1;
+
+            Log.e("e" , String.valueOf(TOTAL_ITEM)); ////
+
+            //Add to pref file of cart list
+            String cart_item = itemName + "," + itemAmount + "," + itemPrice;
+            String pref_key = CartActivity.ITEM_PREFIX_TAG + "_" + String.valueOf(TOTAL_ITEM);
+            SharedPreferences.Editor sharedPreferences = getSharedPreferences(CartActivity.CART_STORAGE_TAG, 0).edit();
+            sharedPreferences.putString(pref_key, cart_item);
+            sharedPreferences.apply();
 
             //Launch back to main menu
             Intent intent = new Intent(this, LandingActivity.class);
             intent.putExtra(INTENT_MESSAGE, message);
             startActivity(intent);
-
-            //TODO: add to cart list
         }
     }
 
     @Override
     public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
         itemAmount = newVal;
-        amountTextView.setText(String.valueOf(itemAmount)); //Set display amount to choosen amount
+        amountTextView.setText(String.valueOf(itemAmount)); //Set display amount to chosen amount
     }
 }

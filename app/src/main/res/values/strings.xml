@@ -5,4 +5,7 @@
     <string name="add_to_cart">Add to Cart</string>
     <string name="amount_label">AMT</string>
     <string name="default_amount">1</string>
+    <string name="delete">Delete</string>
+    <string name="cart_label">Your Cart</string>
+    <string name="sample">Sample</string>
 </resources>
