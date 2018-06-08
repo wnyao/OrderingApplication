@@ -28,6 +28,8 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
     private Map<String, Integer> foodItems;
     private ItemInfoActivity itemInfoActivity;
+
+    //Intent parameter for ItemInfoActivity.clas
     public static final String INTENT_FOODNAME = "CARD_NAME";
     public static final String INTENT_ID = "DRAWABLE_ID";
 
@@ -71,7 +73,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         //Get total number of item picked
-        SharedPreferences sharedPreferences = getSharedPreferences(ItemInfoActivity.PREFS_FILE, 0);
+        SharedPreferences sharedPreferences = getSharedPreferences(ItemInfoActivity.PREFS_FILE_KEY, 0);
         ItemInfoActivity.TOTAL_ITEM = sharedPreferences.getInt(ItemInfoActivity.TOTAL_ITEM_KEY, 0);
     }
 
@@ -178,7 +180,8 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     //Create new ImageView with specified layout parameters
     private ImageView createImageView(int drawableID) {
         ImageView imageView = new ImageView(this);
-        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 500);
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                500);
 
         //Layout Parameters
         imageView.setLayoutParams(layoutParams);

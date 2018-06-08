@@ -30,10 +30,10 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     private int drawableID, itemAmount = 1;
     private Double itemPrice;
 
-    public static int TOTAL_ITEM;
+    public static int TOTAL_ITEM; //For recording number of total item picked
     public static final String INTENT_MESSAGE = "NOTICE";
 
-    public static final String PREFS_FILE = "PREFS_FILE"; //Preferences file for sharing the total of cart items
+    public static final String PREFS_FILE_KEY = "PREFS_FILE"; //Preferences file for sharing the total of cart items
     public static final String TOTAL_ITEM_KEY = "TOTAL_ITEM"; //Key for total item
 
     @Override
@@ -74,7 +74,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         super.onPause();
 
         //Store number of total item picked
-        SharedPreferences.Editor sharedPreferences = getSharedPreferences(PREFS_FILE, 0).edit();
+        SharedPreferences.Editor sharedPreferences = getSharedPreferences(PREFS_FILE_KEY, 0).edit();
         sharedPreferences.putInt(TOTAL_ITEM_KEY, TOTAL_ITEM);
         sharedPreferences.apply();
     }
@@ -132,8 +132,6 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         } else if (viewID == R.id.addToCart_button) {
             message = itemAmount + " " + itemName + "has added to cart.";
             TOTAL_ITEM += 1;
-
-            Log.e("e" , String.valueOf(TOTAL_ITEM)); ////
 
             //Add to pref file of cart list
             String cart_item = itemName + "," + itemAmount + "," + itemPrice;
