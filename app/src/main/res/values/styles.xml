@@ -9,4 +9,11 @@
         <item name="cardViewStyle">@style/CardView</item>
     </style>
 
+    <!-- Dialog Fragment theme -->
+    <style name="AlertDialog" parent="Theme.AppCompat.Light.Dialog.Alert">
+        <item name="android:textColor">@color/colorBlack</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:background">@color/colorWhite</item>
+    </style>
+
 </resources>

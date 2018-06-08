@@ -3,11 +3,13 @@ package com.example.kongwenyao.orderingapplication;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -44,6 +46,21 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
     }
 
+    @Override
+    protected void onStart() {
+        super.onStart();
+
+        //Get intent message
+        Intent intent = getIntent();
+        String message = intent.getStringExtra(ItemInfoActivity.INTENT_MESSAGE);
+
+        if (message != null) {
+            //Notify user on added amount
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.parent_linear_layout), message, Snackbar.LENGTH_LONG);
+            snackbar.show();
+        }
+
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -52,6 +69,19 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         return true;
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemID = item.getItemId();
+
+        //If cart menu item is clicked
+        if (itemID == R.id.cart_menu) {
+            Intent intent = new Intent(this, CartActivity.class);
+            startActivity(intent);
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    //Load all menu data for display
     private void loadData() throws IllegalAccessException {
         LinearLayout linearLayout = findViewById(R.id.linear_layout);
         CardView cardView;

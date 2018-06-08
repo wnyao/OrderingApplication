@@ -3,7 +3,10 @@ package com.example.kongwenyao.orderingapplication;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.AppCompatButton;
+import android.view.View;
 import android.widget.ImageView;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -15,13 +18,17 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
-public class ItemInfoActivity extends AppCompatActivity {
+public class ItemInfoActivity extends AppCompatActivity implements View.OnClickListener, NumberPicker.OnValueChangeListener {
 
     ImageView imageView;
-    TextView titleView, priceView, descriptionView;
+    TextView titleView, priceView, descriptionView, amountTextView;
+    AppCompatButton addButton;
 
     String itemName, itemDescription;
     int drawableID, itemPrice;
+    int itemAmount;
+
+    public static final String INTENT_MESSAGE = "NOTICE";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,6 +40,12 @@ public class ItemInfoActivity extends AppCompatActivity {
         priceView = findViewById(R.id.price_textView);
         titleView = findViewById(R.id.title_textView);
         descriptionView = findViewById(R.id.description_textView);
+        amountTextView = findViewById(R.id.amount_textView);
+        addButton = findViewById(R.id.addToCart_button);
+
+        //Event Listener
+        addButton.setOnClickListener(this);
+        amountTextView.setOnClickListener(this);
 
         //Get intent messages
         Intent intent = getIntent();
@@ -49,6 +62,8 @@ public class ItemInfoActivity extends AppCompatActivity {
         //Set up all information
         displaySetup();
     }
+
+
 
     private void displaySetup() {
         String price = "$" + Integer.toString(itemPrice);
@@ -85,5 +100,34 @@ public class ItemInfoActivity extends AppCompatActivity {
                 itemDescription = infoObj.getString("description"); //get description
             }
         }
+    }
+
+    @Override
+    public void onClick(View v) {
+        int viewID = v.getId();
+        String message;
+
+        if (viewID == R.id.amount_textView) {
+            //Activate number picker dialog
+            NumberPickerDialog numberPickerDialog = new NumberPickerDialog();
+            numberPickerDialog.setValueChangeListener(this);
+            numberPickerDialog.show(getFragmentManager(), "NUMBER_PICKER");
+
+        } else if (viewID == R.id.addToCart_button) {
+            message = itemAmount + " " + itemName + "has added to cart.";
+
+            //Launch back to main menu
+            Intent intent = new Intent(this, LandingActivity.class);
+            intent.putExtra(INTENT_MESSAGE, message);
+            startActivity(intent);
+
+            //TODO: add to cart list
+        }
+    }
+
+    @Override
+    public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+        itemAmount = newVal;
+        amountTextView.setText(String.valueOf(itemAmount)); //Set display amount to choosen amount
     }
 }
