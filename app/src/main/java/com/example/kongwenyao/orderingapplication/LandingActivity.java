@@ -46,13 +46,6 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
-        //Load initiate data
-        try {
-            loadData();
-        } catch (IllegalAccessException | JSONException | IOException e) {
-            e.printStackTrace();
-        }
-
     }
 
     @Override
@@ -75,6 +68,13 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         //Get total number of item picked
         SharedPreferences sharedPreferences = getSharedPreferences(ItemInfoActivity.PREFS_FILE_KEY, 0);
         ItemInfoActivity.TOTAL_ITEM = sharedPreferences.getInt(ItemInfoActivity.TOTAL_ITEM_KEY, 0);
+
+        //Load initiate data
+        try {
+            loadData();
+        } catch (IllegalAccessException | JSONException | IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
