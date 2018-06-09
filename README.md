@@ -9,6 +9,8 @@ Ordering application is a mock up designed as regard to requirements specified b
 2. Check out project from version control using Github > https://github.com/wnyao/ordering_application.git
 3. Run on emulator with SdkVersion 26 and above
 
+**Note:** Emulator on Android Studio may notifies that 'System UI isn't responding' and requests to close the aplication. Several rerun to the application may required in resolving this (Bug fixing still in progress).
+
 ## Fulfilled Requirements
 * List of mock menu items with item picture, name, and price display on landing activity.
 * Info of menu item, with ability to add to cart and quality selector (by clicking on the amount number at info page)
