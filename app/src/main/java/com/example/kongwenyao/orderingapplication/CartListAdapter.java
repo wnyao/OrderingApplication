@@ -15,6 +15,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
     private List<String> dataset;
 
+    //Inner class
     public class ViewHolder extends RecyclerView.ViewHolder {
         private TextView nameTextView, amountTextView, priceTextView;
         public RelativeLayout relativeLayoutBack, relativeLayoutFore;
@@ -69,9 +70,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     }
 
     public void removeItem(int position) {
-
-        Log.e("remove position", String.valueOf(position)); //
-
         dataset.remove(position);
         notifyItemRemoved(position);
     }

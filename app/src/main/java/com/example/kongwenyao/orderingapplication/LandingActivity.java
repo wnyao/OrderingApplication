@@ -3,11 +3,16 @@ package com.example.kongwenyao.orderingapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,17 +26,20 @@ import org.json.JSONException;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
+import java.net.Inet4Address;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LandingActivity extends AppCompatActivity implements View.OnClickListener {
+public class LandingActivity extends AppCompatActivity implements View.OnClickListener, OnDataSendToActivity {
 
     private Map<String, Integer> foodItems;
     private ItemInfoActivity itemInfoActivity;
 
-    //Intent parameter for ItemInfoActivity.clas
+    //Intent keys
     public static final String INTENT_FOODNAME = "CARD_NAME";
     public static final String INTENT_ID = "DRAWABLE_ID";
+
+    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,9 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        //Load initiate data
+        new DataRetrievalTask(this).execute();
+        linearLayout = findViewById(R.id.linear_layout);
     }
 
     @Override
@@ -79,7 +90,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; adds items to the action bar
+        //Inflate the menu; adds items to the action bar
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
@@ -96,64 +107,13 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         return super.onOptionsItemSelected(item);
     }
 
-    //Load all menu data for display
-    private void loadData() throws IllegalAccessException, IOException, JSONException {
-        LinearLayout linearLayout = findViewById(R.id.linear_layout);
-        CardView cardView;
-        ImageView imageView;
-        TextView textView;
-
-        foodItems = getFoodsID();
-
-        double foodPrice;
-        for (String key: foodItems.keySet()) {
-            //Get food Price
-            foodPrice = itemInfoActivity.getFoodItemInfo(key, getResources());
-
-            //Create Views
-            cardView = createCardView();
-            imageView = createImageView(foodItems.get(key));
-            textView = createTextView(key, foodPrice); //key is the food name
-
-            //ViewGroup add views
-            cardView.addView(imageView);
-            cardView.addView(textView);
-            linearLayout.addView(cardView);
-
-            cardView.setOnClickListener(this);
-        }
-
-    }
-
-    //Get dictionary that contain all food name and its drawable reference id
-    private Map<String, Integer> getFoodsID() throws IllegalAccessException {
-        Field[] fieldIDs = R.drawable.class.getFields(); //Get all id from image files within drawable
-        Map<String, Integer> foodItems = new HashMap<>();
-        String fileName;
-        String foodName;
-        int referenceID;
-
-        for (Field id:fieldIDs) {
-            fileName = id.getName(); //Get image filename
-            referenceID = id.getInt(null);
-
-            if (fileName.split("_")[0].equals("item")) {
-                foodName = getCapitalizedName(fileName);
-                foodItems.put(foodName, referenceID);
-            }
-
-        }
-        return foodItems;
-    }
-
-    //Get name capitalized. Name with prefix 'item'.
-    private String getCapitalizedName(String name) {
+    //Get name capitalized. Drawable name with prefix of 'item'.
+    private String getProcessedName(String name) {
         StringBuilder newName = new StringBuilder();
-
         String[] words = name.split("_");
 
         for (String word: words) {
-            if (word.equals(words[words.length - 1])) { //if word is last word of the array list
+            if (word.equals(words[words.length - 1])) { //If word is last word of the array list
                 newName.append(word.toUpperCase().charAt(0)).append(word.substring(1));
             } else if (!word.equalsIgnoreCase("Item")) {
                 newName.append(word.toUpperCase().charAt(0)).append(word.substring(1)).append(" ");
@@ -162,7 +122,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         return newName.toString();
     }
 
-    //Create new CardView with specified layout parameters
+    //Function for creating new CardView with specified layout parameters
     private CardView createCardView() {
         CardView cardView = new CardView(this);
         CardView.LayoutParams layoutParams = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -174,6 +134,9 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         cardView.setCardElevation(10);
         cardView.setRadius(10);
 
+        //Set event listener
+        cardView.setOnClickListener(this);
+
         return cardView;
     }
 
@@ -184,6 +147,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
                 500);
 
         //Layout Parameters
+        imageView.setTag(drawableID); //Set drawable ID to tag
         imageView.setLayoutParams(layoutParams);
         imageView.setImageResource(drawableID);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
@@ -195,7 +159,6 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     //Create new TextView with specified layout parameters
     private TextView createTextView(String name, double price) {
         TextView textView = new TextView(this);
-
         CardView.LayoutParams layoutParams = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -213,28 +176,68 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     }
 
     @Override
-    public void onClick(View v) {
-        String foodName, string;
+    public void onClick(View view) {
+        String vText;
         String[] words;
-        int drawableID;
+        String foodName = "";
+        int drawableID = 0;
 
-        if (v instanceof CardView) {
-            for (int i = 0; i < ((CardView) v).getChildCount(); i++) {
-                if (((CardView) v).getChildAt(i) instanceof TextView) {
-                    //Get food name
-                    string = (String) ((TextView) ((CardView) v).getChildAt(i)).getText();
-                    words = string.split("\\|");
+        if (view instanceof CardView) {
+            for (int i = 0; i < ((CardView) view).getChildCount(); i++) {
+                if (((CardView) view).getChildAt(i) instanceof TextView) {
+                    //Get food name from text view
+                    vText = (String) ((TextView) ((CardView) view).getChildAt(i)).getText();
+                    words = vText.split("\\|");
                     foodName = words[0].trim(); //Trim away the trailing whitespace
 
-                    drawableID = foodItems.get(foodName);
-
-                    //Launch food item info activity
-                    Intent intent = new Intent(this, ItemInfoActivity.class);
-                    intent.putExtra(INTENT_FOODNAME,foodName); //Pass food name to info activity
-                    intent.putExtra(INTENT_ID, drawableID); //Pass drawable ID to info activity
-                    startActivity(intent);
+                } else if (((CardView) view).getChildAt(i) instanceof ImageView) {
+                    //Get drawable id from tag
+                    drawableID = (int) ((CardView) view).getChildAt(i).getTag();
                 }
             }
+
+            //Launch itemInfoActivity.class with passing information
+            launchInfoItemActivity(foodName, drawableID);
         }
+    }
+
+    //Function for launching InfoItemActivity.class
+    private void launchInfoItemActivity(String foodName, int drawableID) {
+        Intent intent = new Intent(this, ItemInfoActivity.class);
+        intent.putExtra(INTENT_FOODNAME,foodName); //Pass food name to info activity
+        intent.putExtra(INTENT_ID, drawableID); //Pass drawable ID to info activity
+        startActivity(intent);
+    }
+
+    CardView cardView;
+    ImageView imageView;
+    TextView textView;
+    double foodPrice = 0;
+    String processedName;
+    int drawableFileID; //Access by runnable
+
+    @Override
+    public void sendData(String key, int drawableID) {
+        processedName = getProcessedName(key);
+        drawableFileID = drawableID;
+
+        //Get food Price
+        try {
+            itemInfoActivity.getFoodItemInfo(processedName, getResources());
+            foodPrice = itemInfoActivity.getItemPrice();
+        } catch (IOException | JSONException e) {
+            e.printStackTrace();
+        }
+
+        //Create card views
+        cardView = createCardView();
+        imageView = createImageView(drawableFileID);
+        textView = createTextView(processedName, foodPrice); //key is the food name
+
+        //ViewGroup add views
+        cardView.addView(imageView);
+        cardView.addView(textView);
+        linearLayout.addView(cardView);
+
     }
 }

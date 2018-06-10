@@ -30,10 +30,11 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     private int drawableID, itemAmount = 1;
     private Double itemPrice;
 
-    public static int TOTAL_ITEM; //For recording number of total item picked
-    public static final String INTENT_MESSAGE = "NOTICE";
+    public static int TOTAL_ITEM;
+    public static final String INTENT_MESSAGE = "NOTICE"; //Intent key
 
-    public static final String PREFS_FILE_KEY = "PREFS_FILE"; //Preferences file for sharing the total of cart items
+    //Shared preferences Keys
+    public static final String PREFS_FILE = "PREFS_FILE"; //Preferences file for sharing the total of cart items
     public static final String TOTAL_ITEM_KEY = "TOTAL_ITEM"; //Key for total item
 
     @Override
@@ -41,7 +42,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_info);
 
-        //View assignment
+        //View reference assignment
         imageView = findViewById(R.id.image_view);
         priceView = findViewById(R.id.price_textView);
         titleView = findViewById(R.id.title_textView);
@@ -49,14 +50,12 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         amountTextView = findViewById(R.id.amount_textView);
         AppCompatButton addButton = findViewById(R.id.addToCart_button);
 
-        //Event Listener
+        //Set event Listener
         addButton.setOnClickListener(this);
         amountTextView.setOnClickListener(this);
 
-        //Get name and drawable ID for item
-        Intent intent = getIntent();
-        itemName = intent.getStringExtra(LandingActivity.INTENT_FOODNAME);
-        drawableID = intent.getIntExtra(LandingActivity.INTENT_ID, 0);
+        //Get intent extras
+        getIntentExtras();
 
         //Get Food Price and Description
         try {
@@ -67,6 +66,13 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
 
         //Set up information related to the item
         displaySetup();
+    }
+
+    //Get item name and drawable ID for item
+    private void getIntentExtras() {
+        Intent intent = getIntent();
+        itemName = intent.getStringExtra(LandingActivity.INTENT_FOODNAME);
+        drawableID = intent.getIntExtra(LandingActivity.INTENT_ID, 0);
     }
 
     @Override
@@ -97,12 +103,16 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line);
         }
-
         return (new JSONObject(stringBuilder.toString()));
     }
 
-    //Get food item information through JSON
-    public double getFoodItemInfo(String itemName, Resources resources) throws IOException, JSONException {
+    /**
+     * Get food item information through JSON
+     *
+     * @Parameter itemName Eg. "Goku Ramen"
+     * @Parameter resources Application resources
+     * */
+    public void getFoodItemInfo(String itemName, Resources resources) throws IOException, JSONException {
         JSONArray itemsInfo = getJsonObject(R.raw.menu_items, resources).getJSONArray("foodItems");
         JSONObject infoObj;
 
@@ -112,9 +122,12 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
             if (infoObj.getString("name").equalsIgnoreCase(itemName)) {
                 itemPrice = infoObj.getDouble("price"); //get food price
                 itemDescription = infoObj.getString("description"); //get description
+                break;
             }
         }
+    }
 
+    public Double getItemPrice() {
         return itemPrice;
     }
 

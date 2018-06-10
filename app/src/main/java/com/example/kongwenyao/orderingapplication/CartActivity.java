@@ -22,7 +22,6 @@ import java.util.List;
 
 public class CartActivity extends AppCompatActivity implements RecyclerItemTouchHelper.RecyclerItemTouchHelperListener {
 
-
     private List<String> cartList;
     private CartListAdapter adapter;
 
@@ -41,7 +40,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
 
         //RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
-        cartList = new LinkedList<>(Arrays.asList(getCartList())); //Note: Array.asList returning fixed-size list; can't flexibly remove
+        cartList = new LinkedList<>(Arrays.asList(getCartList())); //Note: Array.asList returning fixed-size list; can't flexibly remove data
         adapter = new CartListAdapter(cartList);
 
         if (cartList.size() != 0) {
