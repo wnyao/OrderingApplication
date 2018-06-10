@@ -2,7 +2,7 @@
 OrderingApplication
 
 ## Description
-Ordering application is a mock up designed as regard to requirements specified below. Few design elements of this mock up are not entirely build as the requirements described, but closely related.
+Ordering application is a mock up designed based to requirements specified at the below section. Few design elements on this mock up are not entirely build as the requirements described, but closely related.
 
 ## How-to-run
 
@@ -18,7 +18,7 @@ Ordering application is a mock up designed as regard to requirements specified b
 3. Run on emulator with SdkVersion 26 and above
 
 
-**Note:** Emulator on Android Studio may notifies that 'System UI isn't responding' and requests to close the aplication. Several rerun to the application may required in resolving this (Bug fixing still in progress).
+**Note:** Emulator on Android Studio may notifies that 'System UI isn't responding' and requests to close the aplication. Several rerun to the application may required in resolving this (Bug fixing is still in progress).
 
 ## Fulfilled Requirements
 * List of mock menu items with item picture, name, and price display on landing activity.
@@ -27,7 +27,7 @@ Ordering application is a mock up designed as regard to requirements specified b
 * Swipe to remove for cart item (data persistentcy on removing item is still inconsistent)
 
 ## Requirements
-Ordering application is a mock up with below requirements:
+Ordering application is a mock up based upon below requirements:
 * **Page 1:** List of mock menu items with item picture, price, short description, and ability to add item to Cart with quantity selector.
 * **Page 2:** Cart page which lists the items previously added. User should be able to remove items from cart, and also submit their Cart as an order. No backend is required for this app, simply assume that the order data will be sent somewhere and clear the cart on the client
 
