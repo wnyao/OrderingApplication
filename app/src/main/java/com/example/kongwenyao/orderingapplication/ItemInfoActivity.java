@@ -54,10 +54,8 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         addButton.setOnClickListener(this);
         amountTextView.setOnClickListener(this);
 
-        //Get item name and drawable ID for item
-        Intent intent = getIntent();
-        itemName = intent.getStringExtra(LandingActivity.INTENT_FOODNAME);
-        drawableID = intent.getIntExtra(LandingActivity.INTENT_ID, 0);
+        //Get intent extras
+        getIntentExtras();
 
         //Get Food Price and Description
         try {
@@ -68,6 +66,13 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
 
         //Set up information related to the item
         displaySetup();
+    }
+
+    //Get item name and drawable ID for item
+    private void getIntentExtras() {
+        Intent intent = getIntent();
+        itemName = intent.getStringExtra(LandingActivity.INTENT_FOODNAME);
+        drawableID = intent.getIntExtra(LandingActivity.INTENT_ID, 0);
     }
 
     @Override
@@ -101,8 +106,13 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         return (new JSONObject(stringBuilder.toString()));
     }
 
-    //Get food item information through JSON
-    public double getFoodItemInfo(String itemName, Resources resources) throws IOException, JSONException {
+    /**
+     * Get food item information through JSON
+     *
+     * @Parameter itemName Eg. "Goku Ramen"
+     * @Parameter resources Application resources
+     * */
+    public void getFoodItemInfo(String itemName, Resources resources) throws IOException, JSONException {
         JSONArray itemsInfo = getJsonObject(R.raw.menu_items, resources).getJSONArray("foodItems");
         JSONObject infoObj;
 
@@ -112,8 +122,12 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
             if (infoObj.getString("name").equalsIgnoreCase(itemName)) {
                 itemPrice = infoObj.getDouble("price"); //get food price
                 itemDescription = infoObj.getString("description"); //get description
+                break;
             }
         }
+    }
+
+    public Double getItemPrice() {
         return itemPrice;
     }
 
