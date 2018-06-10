@@ -50,7 +50,7 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         final String[] item = dataset.get(position).split(",");
         String totalPrice = "$" + String.format("%.2f", getTotalPrice(item[1], item[2]));
 
-        //Display info
+        //Display cart item information
         holder.nameTextView.setText(item[0]);
         holder.amountTextView.setText(item[1]);
         holder.priceTextView.setText(totalPrice);
@@ -70,9 +70,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     }
 
     public void removeItem(int position) {
-
-        Log.e("e", String.valueOf(position)); //Test
-
         dataset.remove(position);
         notifyItemRemoved(position);
     }

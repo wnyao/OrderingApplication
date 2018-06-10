@@ -80,7 +80,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         super.onPause();
 
         //Store number of total item picked
-        SharedPreferences.Editor sharedPreferences = getSharedPreferences(PREFS_FILE, 0).edit();
+        SharedPreferences.Editor sharedPreferences = getSharedPreferences(PREFS_FILE_KEY, 0).edit();
         sharedPreferences.putInt(TOTAL_ITEM_KEY, TOTAL_ITEM);
         sharedPreferences.apply();
     }
@@ -145,8 +145,6 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         } else if (viewID == R.id.addToCart_button) {
             message = itemAmount + " " + itemName + "has added to cart.";
             TOTAL_ITEM += 1;
-
-            Log.e("e" , String.valueOf(TOTAL_ITEM)); //Test
 
             //Add to pref file of cart list
             String cart_item = itemName + "," + itemAmount + "," + itemPrice;

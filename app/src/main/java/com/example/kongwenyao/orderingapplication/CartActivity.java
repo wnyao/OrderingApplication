@@ -2,6 +2,7 @@ package com.example.kongwenyao.orderingapplication;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.DividerItemDecoration;
@@ -9,7 +10,10 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.support.v7.widget.helper.ItemTouchHelper;
+import android.view.Gravity;
 import android.view.Menu;
+import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -39,17 +43,22 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         cartList = new LinkedList<>(Arrays.asList(getCartList())); //Note: Array.asList returning fixed-size list; can't flexibly remove data
         adapter = new CartListAdapter(cartList);
 
-        //Recycler view setup
-        RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-        recyclerView.setAdapter(adapter);
+        if (cartList.size() != 0) {
+            //Recycler view setup
+            RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getApplicationContext());
+            recyclerView.setLayoutManager(layoutManager);
+            recyclerView.setItemAnimator(new DefaultItemAnimator());
+            recyclerView.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+            recyclerView.setAdapter(adapter);
 
-        //Attach item touch helpers
-        ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0,
-                ItemTouchHelper.LEFT, this);
-        new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+            //Attach item touch helpers
+            ItemTouchHelper.SimpleCallback itemTouchHelperCallback = new RecyclerItemTouchHelper(0,
+                    ItemTouchHelper.LEFT, this);
+            new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
+        } else {
+            //Inform user for no item in cart
+            notifyForNoItem();
+        }
     }
 
     @Override
@@ -83,7 +92,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
         if (viewHolder instanceof CartListAdapter.ViewHolder) {
-            //Get remove item name
+            //TODO: notify remove item name
             String foodName = cartList.get(viewHolder.getAdapterPosition()).split(",")[0];
 
             //Remove item from data set and shared preferences
@@ -98,7 +107,22 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         String key = ITEM_PREFIX_TAG + "_" + String.valueOf(position);
         SharedPreferences sharedPreferences = getSharedPreferences(CART_STORAGE_TAG, 0);
         sharedPreferences.edit().remove(key).apply();
+    }
 
+    //Notify user for no item in cart
+    private void notifyForNoItem() {
+        ConstraintLayout constraintLayout = findViewById(R.id.constraitLayout);
+        TextView textView = new TextView(this);
+
+        //Layout parameters
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT);
+        textView.setLayoutParams(layoutParams);
+        textView.setText(R.string.notify_string_no_item);
+        textView.setTextSize(20);
+        textView.setGravity(Gravity.CENTER_VERTICAL|Gravity.CENTER_HORIZONTAL);
+
+        constraintLayout.addView(textView);
     }
 
 }
