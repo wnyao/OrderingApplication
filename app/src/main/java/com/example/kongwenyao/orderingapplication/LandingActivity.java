@@ -81,11 +81,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         ItemInfoActivity.TOTAL_ITEM = sharedPreferences.getInt(ItemInfoActivity.TOTAL_ITEM_KEY, 0);
 
         //Load initiate data
-        try {
-            loadData();
-        } catch (IllegalAccessException | JSONException | IOException e) {
-            e.printStackTrace();
-        }
+        new DataRetrievalTask(this).execute();
     }
 
     @Override

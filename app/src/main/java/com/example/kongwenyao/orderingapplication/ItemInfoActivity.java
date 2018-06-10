@@ -34,7 +34,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     public static final String INTENT_MESSAGE = "NOTICE"; //Intent key
 
     //Shared preferences Keys
-    public static final String PREFS_FILE = "PREFS_FILE"; //Preferences file for sharing the total of cart items
+    public static final String PREFS_FILE_KEY = "PREFS_FILE"; //Preferences file for sharing the total of cart items
     public static final String TOTAL_ITEM_KEY = "TOTAL_ITEM"; //Key for total item
 
     @Override
