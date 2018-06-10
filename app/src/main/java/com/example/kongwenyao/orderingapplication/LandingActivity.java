@@ -28,6 +28,8 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
     private Map<String, Integer> foodItems;
     private ItemInfoActivity itemInfoActivity;
+
+    //Intent keys
     public static final String INTENT_FOODNAME = "CARD_NAME";
     public static final String INTENT_ID = "DRAWABLE_ID";
 
@@ -50,7 +52,6 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         } catch (IllegalAccessException | JSONException | IOException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
@@ -77,7 +78,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; adds items to the action bar
+        //Inflate the menu; adds items to the action bar
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
@@ -101,14 +102,14 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         ImageView imageView;
         TextView textView;
 
+        double foodPrice;
         foodItems = getFoodsID();
 
-        double foodPrice;
         for (String key: foodItems.keySet()) {
             //Get food Price
             foodPrice = itemInfoActivity.getFoodItemInfo(key, getResources());
 
-            //Create Views
+            //Create card views
             cardView = createCardView();
             imageView = createImageView(foodItems.get(key));
             textView = createTextView(key, foodPrice); //key is the food name
@@ -118,6 +119,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
             cardView.addView(textView);
             linearLayout.addView(cardView);
 
+            //Set event listener
             cardView.setOnClickListener(this);
         }
 
@@ -144,14 +146,13 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         return foodItems;
     }
 
-    //Get name capitalized. Name with prefix 'item'.
+    //Get name capitalized. Drawable name with prefix of 'item'.
     private String getCapitalizedName(String name) {
         StringBuilder newName = new StringBuilder();
-
         String[] words = name.split("_");
 
         for (String word: words) {
-            if (word.equals(words[words.length - 1])) { //if word is last word of the array list
+            if (word.equals(words[words.length - 1])) { //If word is last word of the array list
                 newName.append(word.toUpperCase().charAt(0)).append(word.substring(1));
             } else if (!word.equalsIgnoreCase("Item")) {
                 newName.append(word.toUpperCase().charAt(0)).append(word.substring(1)).append(" ");
@@ -160,7 +161,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         return newName.toString();
     }
 
-    //Create new CardView with specified layout parameters
+    //Function for creating new CardView with specified layout parameters
     private CardView createCardView() {
         CardView cardView = new CardView(this);
         CardView.LayoutParams layoutParams = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
@@ -192,7 +193,6 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     //Create new TextView with specified layout parameters
     private TextView createTextView(String name, double price) {
         TextView textView = new TextView(this);
-
         CardView.LayoutParams layoutParams = new CardView.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 ViewGroup.LayoutParams.MATCH_PARENT);
 
@@ -225,13 +225,18 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
                     drawableID = foodItems.get(foodName);
 
-                    //Launch food item info activity
-                    Intent intent = new Intent(this, ItemInfoActivity.class);
-                    intent.putExtra(INTENT_FOODNAME,foodName); //Pass food name to info activity
-                    intent.putExtra(INTENT_ID, drawableID); //Pass drawable ID to info activity
-                    startActivity(intent);
+                    //Launch itemInfoActivity.class with passing information
+                    launchInfoItemActivity(foodName, drawableID);
                 }
             }
         }
+    }
+
+    //Function for launching InfoItemActivity.class
+    private void launchInfoItemActivity(String foodName, int drawableID) {
+        Intent intent = new Intent(this, ItemInfoActivity.class);
+        intent.putExtra(INTENT_FOODNAME,foodName); //Pass food name to info activity
+        intent.putExtra(INTENT_ID, drawableID); //Pass drawable ID to info activity
+        startActivity(intent);
     }
 }

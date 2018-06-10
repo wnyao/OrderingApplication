@@ -31,8 +31,9 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     private Double itemPrice;
 
     public static int TOTAL_ITEM;
-    public static final String INTENT_MESSAGE = "NOTICE";
+    public static final String INTENT_MESSAGE = "NOTICE"; //Intent key
 
+    //Shared preferences Keys
     public static final String PREFS_FILE = "PREFS_FILE"; //Preferences file for sharing the total of cart items
     public static final String TOTAL_ITEM_KEY = "TOTAL_ITEM"; //Key for total item
 
@@ -41,7 +42,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_item_info);
 
-        //View assignment
+        //View reference assignment
         imageView = findViewById(R.id.image_view);
         priceView = findViewById(R.id.price_textView);
         titleView = findViewById(R.id.title_textView);
@@ -49,11 +50,11 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         amountTextView = findViewById(R.id.amount_textView);
         AppCompatButton addButton = findViewById(R.id.addToCart_button);
 
-        //Event Listener
+        //Set event Listener
         addButton.setOnClickListener(this);
         amountTextView.setOnClickListener(this);
 
-        //Get name and drawable ID for item
+        //Get item name and drawable ID for item
         Intent intent = getIntent();
         itemName = intent.getStringExtra(LandingActivity.INTENT_FOODNAME);
         drawableID = intent.getIntExtra(LandingActivity.INTENT_ID, 0);
@@ -97,7 +98,6 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         while ((line = bufferedReader.readLine()) != null) {
             stringBuilder.append(line);
         }
-
         return (new JSONObject(stringBuilder.toString()));
     }
 
@@ -114,7 +114,6 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
                 itemDescription = infoObj.getString("description"); //get description
             }
         }
-
         return itemPrice;
     }
 
@@ -133,7 +132,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
             message = itemAmount + " " + itemName + "has added to cart.";
             TOTAL_ITEM += 1;
 
-            Log.e("e" , String.valueOf(TOTAL_ITEM)); ////
+            Log.e("e" , String.valueOf(TOTAL_ITEM)); //Test
 
             //Add to pref file of cart list
             String cart_item = itemName + "," + itemAmount + "," + itemPrice;
