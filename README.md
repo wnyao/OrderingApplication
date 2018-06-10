@@ -15,7 +15,7 @@ Ordering application is a mock up designed based to requirements specified at th
 1. Download project repository from Github > https://github.com/wnyao/ordering_application.git
 2. Open Android Studio
 3. Open an existing Android Studio Project
-3. Run on emulator with SdkVersion 26 and above
+3. Run on emulator with target API 26 and above
 
 
 **Note:** Emulator on Android Studio may notifies that 'System UI isn't responding' and requests to close the aplication. Several rerun to the application may required in resolving this (Bug fixing is still in progress).
