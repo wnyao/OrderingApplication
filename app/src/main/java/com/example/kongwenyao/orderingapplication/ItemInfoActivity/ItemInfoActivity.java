@@ -1,4 +1,8 @@
-package com.example.kongwenyao.orderingapplication;
+package com.example.kongwenyao.orderingapplication.ItemInfoActivity;
+
+import com.example.kongwenyao.orderingapplication.CartActivity.CartActivity;
+import com.example.kongwenyao.orderingapplication.LandingActivity.LandingActivity;
+import com.example.kongwenyao.orderingapplication.R;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -10,11 +14,9 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,6 +67,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
 
         //Set up information related to the item
         displaySetup();
+
     }
 
     //Get item name and drawable ID for item
@@ -164,4 +167,5 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         itemAmount = newVal;
         amountTextView.setText(String.valueOf(itemAmount)); //Set display amount to chosen amount
     }
+
 }

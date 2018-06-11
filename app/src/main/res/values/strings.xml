@@ -9,4 +9,6 @@
     <string name="cart_label">Your Cart</string>
     <string name="sample">Sample</string>
     <string name="notify_string_no_item">No item found in your cart</string>
+    <string name="reset_label">Reset</string>
+    <string name="submit_label">Submit Your Order</string>
 </resources>

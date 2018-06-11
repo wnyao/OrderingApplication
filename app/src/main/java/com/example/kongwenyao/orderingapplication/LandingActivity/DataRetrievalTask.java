@@ -1,7 +1,10 @@
-package com.example.kongwenyao.orderingapplication;
+package com.example.kongwenyao.orderingapplication.LandingActivity;
 
 import android.app.Activity;
 import android.os.AsyncTask;
+
+import com.example.kongwenyao.orderingapplication.R;
+
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;

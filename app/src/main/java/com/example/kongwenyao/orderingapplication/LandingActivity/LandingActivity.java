@@ -1,4 +1,4 @@
-package com.example.kongwenyao.orderingapplication;
+package com.example.kongwenyao.orderingapplication.LandingActivity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,15 +17,16 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.example.kongwenyao.orderingapplication.CartActivity.CartActivity;
+import com.example.kongwenyao.orderingapplication.ItemInfoActivity.ItemInfoActivity;
+import com.example.kongwenyao.orderingapplication.R;
+
 import org.json.JSONException;
 import java.io.IOException;
 
 public class LandingActivity extends AppCompatActivity implements View.OnClickListener, OnDataSendToActivity {
 
     private LinearLayout linearLayout;
-    private CardView cardView;
-    private ImageView imageView;
-    private TextView textView;
 
     private ItemInfoActivity itemInfoActivity;
     double foodPrice = 0;
@@ -52,6 +53,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         //Load initiate data
         new DataRetrievalTask(this).execute();
         linearLayout = findViewById(R.id.linear_layout);
+
     }
 
     @Override
@@ -200,6 +202,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(intent);
     }
 
+    //TODO: Too much work on main thread on creating views
     @Override
     public void sendData(String key, int drawableID) {
         processedName = getProcessedName(key);
@@ -214,9 +217,9 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         }
 
         //Create card views
-        cardView = createCardView();
-        imageView = createImageView(drawableFileID);
-        textView = createTextView(processedName, foodPrice); //key is the food name
+        CardView cardView = createCardView();
+        ImageView imageView = createImageView(drawableFileID);
+        TextView textView = createTextView(processedName, foodPrice);
 
         //ViewGroup add views
         cardView.addView(imageView);

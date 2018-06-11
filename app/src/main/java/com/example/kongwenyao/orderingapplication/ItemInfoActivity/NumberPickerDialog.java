@@ -1,4 +1,4 @@
-package com.example.kongwenyao.orderingapplication;
+package com.example.kongwenyao.orderingapplication.ItemInfoActivity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -6,6 +6,8 @@ import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.widget.NumberPicker;
+
+import com.example.kongwenyao.orderingapplication.R;
 
 public class NumberPickerDialog extends DialogFragment {
 

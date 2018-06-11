@@ -1,8 +1,8 @@
-package com.example.kongwenyao.orderingapplication;
+package com.example.kongwenyao.orderingapplication.CartActivity;
 
+import com.example.kongwenyao.orderingapplication.R;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -30,9 +30,9 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
             relativeLayoutFore = itemView.findViewById(R.id.relative_foreground);
             relativeLayoutBack = itemView.findViewById(R.id.relative_background);
         }
-
     }
 
+    //Constructor
     public CartListAdapter(List<String> dataset) {
         this.dataset = dataset;
     }
@@ -65,7 +65,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     private double getTotalPrice(String amount, String price) {
         int num = Integer.parseInt(amount);
         double cost = Double.parseDouble(price);
-
         return (num * cost);
     }
 
@@ -73,4 +72,10 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         dataset.remove(position);
         notifyItemRemoved(position);
     }
+
+    public void resetRecyclerView() {
+        notifyItemRangeRemoved(0, getItemCount());
+        dataset.clear();
+    }
+
 }
