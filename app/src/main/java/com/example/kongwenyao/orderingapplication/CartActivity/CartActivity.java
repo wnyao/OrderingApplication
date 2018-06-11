@@ -82,7 +82,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; adds items to the action bar
-        getMenuInflater().inflate(R.menu.cart_activity_menu, menu);
+        getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
 

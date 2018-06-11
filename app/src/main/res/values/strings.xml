@@ -11,4 +11,5 @@
     <string name="notify_string_no_item">No item found in your cart</string>
     <string name="reset_label">Reset</string>
     <string name="submit_label">Submit Your Order</string>
+    <string name="logo_label">LOGO</string>
 </resources>

@@ -10,9 +10,9 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,11 +22,13 @@ import com.example.kongwenyao.orderingapplication.ItemInfoActivity.ItemInfoActiv
 import com.example.kongwenyao.orderingapplication.R;
 
 import org.json.JSONException;
+
 import java.io.IOException;
 
 public class LandingActivity extends AppCompatActivity implements View.OnClickListener, OnDataSendToActivity {
 
     private LinearLayout linearLayout;
+    private ImageButton cartBtn;
 
     private ItemInfoActivity itemInfoActivity;
     double foodPrice = 0;
@@ -42,18 +44,23 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_landing);
 
-        //Instance
-        itemInfoActivity = new ItemInfoActivity();
-
         //Custom Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         toolbar.setTitle("");
         setSupportActionBar(toolbar);
 
+        //Instance
+        itemInfoActivity = new ItemInfoActivity();
+
+        //View assignment
+        linearLayout = findViewById(R.id.linear_layout);
+        cartBtn = findViewById(R.id.cart_button);
+
+        //Set event listener
+        cartBtn.setOnClickListener(this);
+
         //Load initiate data
         new DataRetrievalTask(this).execute();
-        linearLayout = findViewById(R.id.linear_layout);
-
     }
 
     @Override
@@ -86,18 +93,6 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         //Inflate the menu; adds items to the action bar
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemID = item.getItemId();
-
-        //If cart menu item is clicked
-        if (itemID == R.id.cart_menu) {
-            Intent intent = new Intent(this, CartActivity.class);
-            startActivity(intent);
-        }
-        return super.onOptionsItemSelected(item);
     }
 
     //Get name capitalized. Drawable name with prefix of 'item'.
@@ -175,8 +170,13 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         String foodName = "";
         int drawableID = 0;
 
-        if (view instanceof CardView) {
+        if (view.getId() == R.id.cart_button) { //Cart menu button
+            Intent intent = new Intent(this, CartActivity.class);
+            startActivity(intent);
+
+        } else if (view instanceof CardView) { //Card view
             for (int i = 0; i < ((CardView) view).getChildCount(); i++) {
+
                 if (((CardView) view).getChildAt(i) instanceof TextView) {
                     //Get food name from text view
                     vText = (String) ((TextView) ((CardView) view).getChildAt(i)).getText();
