@@ -3,16 +3,11 @@ package com.example.kongwenyao.orderingapplication;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
-import android.media.Image;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Looper;
-import android.os.Message;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,23 +18,23 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.json.JSONException;
-
 import java.io.IOException;
-import java.lang.reflect.Field;
-import java.net.Inet4Address;
-import java.util.HashMap;
-import java.util.Map;
 
 public class LandingActivity extends AppCompatActivity implements View.OnClickListener, OnDataSendToActivity {
 
-    private Map<String, Integer> foodItems;
+    private LinearLayout linearLayout;
+    private CardView cardView;
+    private ImageView imageView;
+    private TextView textView;
+
     private ItemInfoActivity itemInfoActivity;
+    double foodPrice = 0;
+    String processedName;
+    int drawableFileID; //Access by runnable
 
     //Intent keys
     public static final String INTENT_FOODNAME = "CARD_NAME";
     public static final String INTENT_ID = "DRAWABLE_ID";
-
-    LinearLayout linearLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,7 +76,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         ItemInfoActivity.TOTAL_ITEM = sharedPreferences.getInt(ItemInfoActivity.TOTAL_ITEM_KEY, 0);
 
         //Load initiate data
-        new DataRetrievalTask(this).execute();
+        new DataRetrievalTask(this);
     }
 
     @Override
@@ -125,7 +120,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
                 ViewGroup.LayoutParams.WRAP_CONTENT);
 
         //Layout Parameters
-        layoutParams.setMargins(30, 50, 30, 0);
+        layoutParams.setMargins(30, 30, 30, 20);
         cardView.setLayoutParams(layoutParams);
         cardView.setCardElevation(10);
         cardView.setRadius(10);
@@ -205,13 +200,6 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(intent);
     }
 
-    CardView cardView;
-    ImageView imageView;
-    TextView textView;
-    double foodPrice = 0;
-    String processedName;
-    int drawableFileID; //Access by runnable
-
     @Override
     public void sendData(String key, int drawableID) {
         processedName = getProcessedName(key);
@@ -234,6 +222,5 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         cardView.addView(imageView);
         cardView.addView(textView);
         linearLayout.addView(cardView);
-
     }
 }

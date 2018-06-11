@@ -2,7 +2,6 @@ package com.example.kongwenyao.orderingapplication;
 
 import android.app.Activity;
 import android.os.AsyncTask;
-
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map;
