@@ -138,6 +138,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         } else if (id == R.id.submit_button) {
             resetAll();
             notifyThroughSnackBar("Your order has been submitted");
+            //TODO: get cart items
         }
     }
 

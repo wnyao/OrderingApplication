@@ -25,7 +25,7 @@ public class DataRetrievalTask extends AsyncTask<String, Void, Map<String, Integ
         int referenceID = 0;
 
         for (Field id:fieldIDs) {
-            fileName = id.getName(); //Get image filename Eg. item_tamakoyaki
+            fileName = id.getName(); //Get image filename Eg. "item_tamakoyaki"
 
             try {
                 referenceID = id.getInt(null);
