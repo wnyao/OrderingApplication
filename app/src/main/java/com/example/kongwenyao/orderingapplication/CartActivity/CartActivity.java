@@ -98,7 +98,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
             itemKey = ITEM_PREFIX_TAG + "_" + String.valueOf(i);
             stringExtra = sharedPreferences.getString(itemKey, "");
 
-            //If item being removed from pref list
+            //If not item been removed from preferences list
             if (!stringExtra.equals("")) {
                 cartItems.add(sharedPreferences.getString(itemKey, ""));
             }
@@ -110,13 +110,13 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     public void onSwiped(RecyclerView.ViewHolder viewHolder, int direction, int position) {
 
         if (viewHolder instanceof CartListAdapter.ViewHolder) {
-            //TODO: notify remove item name
-            String foodName = cartList.get(viewHolder.getAdapterPosition()).split(",")[0];
+            //Notify remove item name
+            String foodName = cartList.get(viewHolder.getAdapterPosition()).split(",")[1]; //Get item name
             notifyThroughSnackBar(foodName + " has been removed from you cart");
 
             //Remove item from data set and shared preferences
+            removeItemFromPrefsFile(adapter.getRemoveItemTag(position));
             adapter.removeItem(position);
-            removeItemFromPrefsFile(position);
 
             //Hide buttons if no item in cart list
             if (adapter.getItemCount() == 0) {
@@ -144,7 +144,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     //Reset to default condition
     private void resetAll() {
         resetCartList();
-        adapter.resetRecyclerView();
+        adapter.clearRecyclerView();
         resetBtn.setVisibility(View.INVISIBLE);
         submitBtn.setVisibility(View.INVISIBLE);
         notifyForNoItem();

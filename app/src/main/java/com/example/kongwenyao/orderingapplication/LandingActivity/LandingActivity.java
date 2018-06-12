@@ -19,10 +19,10 @@ import android.widget.TextView;
 
 import com.example.kongwenyao.orderingapplication.CartActivity.CartActivity;
 import com.example.kongwenyao.orderingapplication.ItemInfoActivity.ItemInfoActivity;
+import com.example.kongwenyao.orderingapplication.MenuItem;
 import com.example.kongwenyao.orderingapplication.R;
 
 import org.json.JSONException;
-
 import java.io.IOException;
 
 public class LandingActivity extends AppCompatActivity implements View.OnClickListener, OnDataSendToActivity {
@@ -31,7 +31,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
     private ImageButton cartBtn;
 
     private ItemInfoActivity itemInfoActivity;
-    double foodPrice = 0;
+    private MenuItem menuItem;
     String processedName;
     int drawableFileID; //Access by runnable
 
@@ -211,7 +211,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         //Get food Price
         try {
             itemInfoActivity.getFoodItemInfo(processedName, getResources());
-            foodPrice = itemInfoActivity.getItemPrice();
+            menuItem = itemInfoActivity.getMenuItem();
         } catch (IOException | JSONException e) {
             e.printStackTrace();
         }
@@ -219,7 +219,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         //Create card views
         CardView cardView = createCardView();
         ImageView imageView = createImageView(drawableFileID);
-        TextView textView = createTextView(processedName, foodPrice);
+        TextView textView = createTextView(processedName, menuItem.getItemPrice());
 
         //ViewGroup add views
         cardView.addView(imageView);

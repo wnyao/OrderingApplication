@@ -1,9 +1,5 @@
 package com.example.kongwenyao.orderingapplication.ItemInfoActivity;
 
-import com.example.kongwenyao.orderingapplication.CartActivity.CartActivity;
-import com.example.kongwenyao.orderingapplication.LandingActivity.LandingActivity;
-import com.example.kongwenyao.orderingapplication.R;
-
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -14,9 +10,16 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.NumberPicker;
 import android.widget.TextView;
+
+import com.example.kongwenyao.orderingapplication.CartActivity.CartActivity;
+import com.example.kongwenyao.orderingapplication.LandingActivity.LandingActivity;
+import com.example.kongwenyao.orderingapplication.MenuItem;
+import com.example.kongwenyao.orderingapplication.R;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -27,9 +30,9 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     private ImageView imageView;
     private TextView titleView, priceView, descriptionView, amountTextView;
 
-    private String itemName, itemDescription;
+    private String itemName;
     private int drawableID, itemAmount = 1;
-    private Double itemPrice;
+    private MenuItem menuItem;
 
     public static int TOTAL_ITEM;
     public static final String INTENT_MESSAGE = "NOTICE"; //Intent key
@@ -68,6 +71,8 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         //Set up information related to the item
         displaySetup();
 
+
+
     }
 
     //Get item name and drawable ID for item
@@ -88,11 +93,33 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
     }
 
     private void displaySetup() {
-        String price = "$" + String.format("%.2f", itemPrice);
+        String price = "$" + String.format("%.2f", menuItem.getItemPrice());
         priceView.setText(price);
-        titleView.setText(itemName);
-        imageView.setImageResource(drawableID);
-        descriptionView.setText(itemDescription);
+        titleView.setText(menuItem.getItemName());
+        imageView.setImageResource(menuItem.getItemDrawableID());
+        descriptionView.setText(menuItem.getItemDescription());
+    }
+
+    /**
+     * Get food item information through JSON
+     *
+     * @Parameter itemName Eg. "Goku Ramen"
+     * @Parameter resources Application resources
+     */
+    public void getFoodItemInfo(String itemName, Resources resources) throws IOException, JSONException {
+        JSONArray itemsInfo = getJsonObject(R.raw.menu_items, resources).getJSONArray("foodItems");
+        JSONObject itemObj;
+
+        for (int i = 0; i < itemsInfo.length(); i++) {
+            itemObj = itemsInfo.getJSONObject(i);
+
+            if (itemObj.getString("name").equalsIgnoreCase(itemName)) {
+                double price = itemObj.getDouble("price"); //Get item price
+                String description = itemObj.getString("description"); //Get item description
+                menuItem = new MenuItem(itemName, price, description, drawableID); //Turn to menuItem object
+                break;
+            }
+        }
     }
 
     //Get JSON Object via reference ID of raw resources
@@ -108,29 +135,9 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
         return (new JSONObject(stringBuilder.toString()));
     }
 
-    /**
-     * Get food item information through JSON
-     *
-     * @Parameter itemName Eg. "Goku Ramen"
-     * @Parameter resources Application resources
-     * */
-    public void getFoodItemInfo(String itemName, Resources resources) throws IOException, JSONException {
-        JSONArray itemsInfo = getJsonObject(R.raw.menu_items, resources).getJSONArray("foodItems");
-        JSONObject infoObj;
-
-        for (int i = 0; i < itemsInfo.length(); i++) {
-            infoObj = itemsInfo.getJSONObject(i);
-
-            if (infoObj.getString("name").equalsIgnoreCase(itemName)) {
-                itemPrice = infoObj.getDouble("price"); //get food price
-                itemDescription = infoObj.getString("description"); //get description
-                break;
-            }
-        }
-    }
-
-    public Double getItemPrice() {
-        return itemPrice;
+    //Getter for menuItem object
+    public MenuItem getMenuItem() {
+        return menuItem;
     }
 
     @Override
@@ -145,17 +152,19 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
             numberPickerDialog.show(getFragmentManager(), "NUMBER_PICKER");
 
         } else if (viewID == R.id.addToCart_button) {
-            message = itemAmount + " " + itemName + "has added to cart.";
+            double totalAmount = itemAmount * menuItem.getItemPrice(); //Calculate total price of selected item
             TOTAL_ITEM += 1;
 
             //Add to pref file of cart list
-            String cart_item = itemName + "," + itemAmount + "," + itemPrice;
-            String pref_key = CartActivity.ITEM_PREFIX_TAG + "_" + String.valueOf(TOTAL_ITEM);
+            String tagNum = String.valueOf(TOTAL_ITEM);
+            String pref_key = CartActivity.ITEM_PREFIX_TAG + "_" + String.valueOf(tagNum);
+            String cart_item = tagNum + "," + menuItem.getItemName() + "," + itemAmount + "," + totalAmount;
             SharedPreferences.Editor sharedPreferences = getSharedPreferences(CartActivity.CART_STORAGE_TAG, 0).edit();
             sharedPreferences.putString(pref_key, cart_item);
             sharedPreferences.apply();
 
             //Launch back to main menu
+            message = itemAmount + " " + menuItem.getItemName() + "has added to cart.";
             Intent intent = new Intent(this, LandingActivity.class);
             intent.putExtra(INTENT_MESSAGE, message);
             startActivity(intent);

@@ -1,19 +1,22 @@
 package com.example.kongwenyao.orderingapplication.CartActivity;
 
+import com.example.kongwenyao.orderingapplication.CartItem;
 import com.example.kongwenyao.orderingapplication.R;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHolder> {
 
-    private List<String> dataset;
+    private List<CartItem> cartItems;
 
     //Inner class
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -33,8 +36,26 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     }
 
     //Constructor
-    public CartListAdapter(List<String> dataset) {
-        this.dataset = dataset;
+    public CartListAdapter(List<String> cartItems) {
+        this.cartItems = getCartItemObjects(cartItems);
+
+        Log.e("cartItems", cartItems.toString());
+    }
+
+    //Turn array of string with cart item info into array of cartItem object
+    private List<CartItem> getCartItemObjects(List<String> dataset) {
+        List<CartItem> cartItems = new LinkedList<>();
+        CartItem cartItem;
+
+        for (String data: dataset) {
+            String[] itemInfo = data.split(","); //Data of each dataset are ["tagNum, itemName, itemAmount, totalPrice"]
+
+            cartItem = new CartItem(Integer.parseInt(itemInfo[0]), itemInfo[1], Integer.parseInt(itemInfo[2]),
+                    Double.parseDouble(itemInfo[3]));
+
+            cartItems.add(cartItem);
+        }
+        return cartItems;
     }
 
     @NonNull
@@ -47,35 +68,32 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        final String[] item = dataset.get(position).split(",");
-        String totalPrice = "$" + String.format("%.2f", getTotalPrice(item[1], item[2]));
+        final CartItem item = cartItems.get(position);
 
         //Display cart item information
-        holder.nameTextView.setText(item[0]);
-        holder.amountTextView.setText(item[1]);
-        holder.priceTextView.setText(totalPrice);
+        holder.nameTextView.setText(item.getItemName());
+        holder.amountTextView.setText(String.valueOf(item.getItemAmount()));
+        holder.priceTextView.setText(String.valueOf(item.getTotalPrice()));
     }
 
     @Override
     public int getItemCount() {
-        return dataset.size();
-    }
-
-    //Calculate total price
-    private double getTotalPrice(String amount, String price) {
-        int num = Integer.parseInt(amount);
-        double cost = Double.parseDouble(price);
-        return (num * cost);
+        return cartItems.size();
     }
 
     public void removeItem(int position) {
-        dataset.remove(position);
+        cartItems.remove(position);
         notifyItemRemoved(position);
     }
 
-    public void resetRecyclerView() {
+    public int getRemoveItemTag(int position) {
+        CartItem cartItem = cartItems.get(position);
+        return cartItem.getTag();
+    }
+
+    public void clearRecyclerView() {
         notifyItemRangeRemoved(0, getItemCount());
-        dataset.clear();
+        cartItems.clear();
     }
 
 }
