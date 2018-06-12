@@ -38,8 +38,6 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     //Constructor
     public CartListAdapter(List<String> cartItems) {
         this.cartItems = getCartItemObjects(cartItems);
-
-        Log.e("cartItems", cartItems.toString());
     }
 
     //Turn array of string with cart item info into array of cartItem object
@@ -69,11 +67,12 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         final CartItem item = cartItems.get(position);
+        String itemPrice = "$" + String.format("%.2f", item.getTotalPrice());
 
         //Display cart item information
         holder.nameTextView.setText(item.getItemName());
         holder.amountTextView.setText(String.valueOf(item.getItemAmount()));
-        holder.priceTextView.setText(String.valueOf(item.getTotalPrice()));
+        holder.priceTextView.setText(itemPrice);
     }
 
     @Override
@@ -95,5 +94,19 @@ public class CartListAdapter extends RecyclerView.Adapter<CartListAdapter.ViewHo
         notifyItemRangeRemoved(0, getItemCount());
         cartItems.clear();
     }
+
+    private double calculateTotalPrice() {
+        double totalPrice = 0;
+        for (CartItem cartItem: cartItems) {
+            totalPrice += cartItem.getTotalPrice();
+        }
+        return totalPrice;
+    }
+
+    public double getTotalPrice() {
+        double totalPrice = calculateTotalPrice();
+        return totalPrice;
+    }
+
 
 }

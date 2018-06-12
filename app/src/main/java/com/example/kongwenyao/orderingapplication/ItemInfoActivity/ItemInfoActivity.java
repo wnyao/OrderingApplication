@@ -164,7 +164,7 @@ public class ItemInfoActivity extends AppCompatActivity implements View.OnClickL
             sharedPreferences.apply();
 
             //Launch back to main menu
-            message = itemAmount + " " + menuItem.getItemName() + "has added to cart.";
+            message = itemAmount + " " + menuItem.getItemName() + " has added to cart.";
             Intent intent = new Intent(this, LandingActivity.class);
             intent.putExtra(INTENT_MESSAGE, message);
             startActivity(intent);

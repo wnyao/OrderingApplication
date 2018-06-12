@@ -31,6 +31,7 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
     private List<String> cartList;
     private CartListAdapter adapter;
     private Button resetBtn, submitBtn;
+    private TextView totalView, totalPriceLabel;
 
     public static final String CART_STORAGE_TAG = "CART_LIST";
     public static final String ITEM_PREFIX_TAG = "ITEM";
@@ -48,6 +49,8 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         //View assignment
         resetBtn = findViewById(R.id.reset_button);
         submitBtn = findViewById(R.id.submit_button);
+        totalView = findViewById(R.id.total_price);
+        totalPriceLabel = findViewById(R.id.totalprice_label);
 
         //RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recycler_view);
@@ -68,10 +71,12 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
             new ItemTouchHelper(itemTouchHelperCallback).attachToRecyclerView(recyclerView);
 
             //Set button state and set event listener
-            resetBtn.setVisibility(View.VISIBLE);
+            setViewsVisibility(true);
             resetBtn.setOnClickListener(this);
-            submitBtn.setVisibility(View.VISIBLE);
             submitBtn.setOnClickListener(this);
+
+            //Update total price
+            updateTotalPrice();
 
         } else {
             //Inform user for no item in cart
@@ -118,11 +123,12 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
             removeItemFromPrefsFile(adapter.getRemoveItemTag(position));
             adapter.removeItem(position);
 
-            //Hide buttons if no item in cart list
             if (adapter.getItemCount() == 0) {
-                resetBtn.setVisibility(View.INVISIBLE);
-                submitBtn.setVisibility(View.INVISIBLE);
+                //Hide buttons and total price views invisible if no item in cart list
+                setViewsVisibility(false);
                 notifyForNoItem();
+            } else {
+                updateTotalPrice();
             }
         }
     }
@@ -142,12 +148,32 @@ public class CartActivity extends AppCompatActivity implements RecyclerItemTouch
         }
     }
 
+    //Set views visibility when cart has items or not
+    private void setViewsVisibility(boolean state) {
+        if (state) {
+            resetBtn.setVisibility(View.VISIBLE);
+            submitBtn.setVisibility(View.VISIBLE);
+            totalView.setVisibility(View.VISIBLE);
+            totalPriceLabel.setVisibility(View.VISIBLE);
+        } else {
+            resetBtn.setVisibility(View.INVISIBLE);
+            submitBtn.setVisibility(View.INVISIBLE);
+            totalView.setVisibility(View.INVISIBLE);
+            totalPriceLabel.setVisibility(View.INVISIBLE);
+        }
+    }
+
+    //Update total price
+    private void updateTotalPrice() {
+        String total = "$" + String.format("%.2f", adapter.getTotalPrice());
+        totalView.setText(total);
+    }
+
     //Reset to default condition
     private void resetAll() {
         resetCartList();
         adapter.clearRecyclerView();
-        resetBtn.setVisibility(View.INVISIBLE);
-        submitBtn.setVisibility(View.INVISIBLE);
+        setViewsVisibility(false);
         notifyForNoItem();
     }
 

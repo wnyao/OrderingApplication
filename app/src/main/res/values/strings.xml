@@ -12,4 +12,5 @@
     <string name="reset_label">Reset</string>
     <string name="submit_label">Submit Your Order</string>
     <string name="logo_label">LOGO</string>
+    <string name="totalprice_label">Total:</string>
 </resources>

@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:contentDescription="@string/img_content_description"
-        android:foreground="@drawable/shape_gradient1"
+        android:foreground="@drawable/shape_gradient_black_1"
         android:scaleType="centerCrop"
         android:src="@drawable/item_omurice"
         app2:layout_constraintEnd_toEndOf="parent"

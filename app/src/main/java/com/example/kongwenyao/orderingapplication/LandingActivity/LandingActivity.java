@@ -73,7 +73,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
         if (message != null) {
             //Notify user on added amount
-            Snackbar snackbar = Snackbar.make(findViewById(R.id.parent_linear_layout), message, Snackbar.LENGTH_LONG);
+            Snackbar snackbar = Snackbar.make(findViewById(R.id.parent_linear_layout), message, Snackbar.LENGTH_SHORT);
             snackbar.show();
 
             //Remove extra
@@ -139,7 +139,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         imageView.setLayoutParams(layoutParams);
         imageView.setImageResource(drawableID);
         imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
-        imageView.setForeground(this.getDrawable(R.drawable.shape_gradient));
+        imageView.setForeground(this.getDrawable(R.drawable.shape_gradient_black));
 
         return imageView;
     }
