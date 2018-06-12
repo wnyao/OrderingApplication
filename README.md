@@ -18,7 +18,7 @@ Ordering application is a mock up designed based to requirements specified at th
 3. Run on emulator with target API 26 and above
 
 
-**Note:** Emulator on Android Studio may notifies that 'System UI isn't responding' and requests to close the aplication. Several rerun to the application may required in resolving this (Bug fixing is still in progress).
+**Note:** Emulator on Android Studio may notifies that 'System UI isn't responding' due to slow startup and requests to close or wait for the aplication. Either wait or rerun the application after startup of emulator is complete will resolve this issue.
 
 ## Fulfilled Requirements
 * List of mock menu items with item picture, name, and price display on landing activity.
