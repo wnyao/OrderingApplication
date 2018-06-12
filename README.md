@@ -24,7 +24,9 @@ Ordering application is a mock up designed based to requirements specified at th
 * List of mock menu items with item picture, name, and price display on landing activity.
 * Info of menu item, with ability to add to cart and quatity selector (by clicking on the amount number at info page)
 * Cart page which list the items added to cart
-* Swipe to remove for cart item (data persistentcy on removing item is still inconsistent)
+* Swipe to remove for cart item
+* Data persistence through app restarts and jumping between activity
+* Give responses to client on remove item, reset cart list, submit order, and add to cart list.
 
 ## Requirements
 Ordering application is a mock up based upon below requirements:
