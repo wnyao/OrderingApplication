@@ -28,7 +28,7 @@ import java.io.IOException;
 public class LandingActivity extends AppCompatActivity implements View.OnClickListener, OnDataSendToActivity {
 
     private LinearLayout linearLayout;
-    private ImageButton cartBtn;
+    private CardView cardView;
 
     private ItemInfoActivity itemInfoActivity;
     private MenuItem menuItem;
@@ -54,7 +54,7 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
 
         //View assignment
         linearLayout = findViewById(R.id.linear_layout);
-        cartBtn = findViewById(R.id.cart_button);
+        ImageButton cartBtn = findViewById(R.id.cart_button);
 
         //Set event listener
         cartBtn.setOnClickListener(this);
@@ -202,28 +202,40 @@ public class LandingActivity extends AppCompatActivity implements View.OnClickLi
         startActivity(intent);
     }
 
-    //TODO: Too much work on main thread on creating views
+    //Trigger by onPostExecute() of DataRetrievalTask.class
     @Override
-    public void sendData(String key, int drawableID) {
-        processedName = getProcessedName(key);
+    public void sendData(String itemName, final int drawableID) {
+        processedName = getProcessedName(itemName);
         drawableFileID = drawableID;
 
-        //Get food Price
+        //Get food price
         try {
             itemInfoActivity.getFoodItemInfo(processedName, getResources());
             menuItem = itemInfoActivity.getMenuItem();
-        } catch (IOException | JSONException e) {
+        } catch (JSONException | IOException e) {
             e.printStackTrace();
         }
 
-        //Create card views
-        CardView cardView = createCardView();
-        ImageView imageView = createImageView(drawableFileID);
-        TextView textView = createTextView(processedName, menuItem.getItemPrice());
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                //Create card view
+                cardView = createCardView();
+                ImageView imageView = createImageView(drawableFileID);
+                TextView textView = createTextView(processedName, menuItem.getItemPrice());
 
-        //ViewGroup add views
-        cardView.addView(imageView);
-        cardView.addView(textView);
-        linearLayout.addView(cardView);
+                //Assemble view
+                cardView.addView(imageView);
+                cardView.addView(textView);
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        linearLayout.addView(cardView);
+                    }
+                });
+            }
+        }).run();
     }
+
 }

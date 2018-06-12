@@ -1,5 +1,5 @@
 package com.example.kongwenyao.orderingapplication.LandingActivity;
 
 public interface OnDataSendToActivity {
-    void sendData(String key, int drawableID);
+    void sendData(String itemName, int drawableID);
 }
