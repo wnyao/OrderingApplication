@@ -18,13 +18,15 @@ Ordering application is a mock up designed based to requirements specified at th
 3. Run on emulator with target API 26 and above
 
 
-**Note:** Emulator on Android Studio may notifies that 'System UI isn't responding' and requests to close the aplication. Several rerun to the application may required in resolving this (Bug fixing is still in progress).
+**Note:** Emulator on Android Studio may notifies that 'System UI isn't responding' due to slow startup and requests to close or wait for the aplication. Either wait or rerun the application after startup of emulator is complete will resolve this issue.
 
 ## Fulfilled Requirements
 * List of mock menu items with item picture, name, and price display on landing activity.
 * Info of menu item, with ability to add to cart and quatity selector (by clicking on the amount number at info page)
 * Cart page which list the items added to cart
-* Swipe to remove for cart item (data persistentcy on removing item is still inconsistent)
+* Swipe to remove for cart item
+* Data persistence through app restarts and jumping between activity
+* Give responses to client on remove item, reset cart list, submit order, and add to cart list.
 
 ## Requirements
 Ordering application is a mock up based upon below requirements:
