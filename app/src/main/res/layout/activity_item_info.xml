@@ -24,6 +24,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="30dp"
+        android:text="Omurice"
         android:textColor="@color/colorBlack"
         android:textSize="30sp"
         android:textStyle="bold"
@@ -34,12 +35,13 @@
         android:id="@+id/price_textView"
         android:layout_width="0dp"
         android:layout_height="46dp"
-        android:layout_marginEnd="24dp"
-        android:layout_marginTop="30dp"
-        android:textSize="30sp"
+        android:layout_marginStart="24dp"
+        android:layout_marginTop="14dp"
+        android:text="$8.00"
+        android:textSize="24sp"
         android:textStyle="bold"
-        app2:layout_constraintEnd_toEndOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/image_view" />
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toBottomOf="@+id/title_textView" />
 
     <TextView
         android:id="@+id/description_textView"
@@ -52,8 +54,9 @@
         android:padding="24dp"
         android:textSize="18sp"
         app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintHorizontal_bias="0.498"
         app2:layout_constraintStart_toStartOf="parent"
-        app2:layout_constraintTop_toBottomOf="@+id/title_textView" />
+        app2:layout_constraintTop_toBottomOf="@+id/divider" />
 
     <TextView
         android:id="@+id/amount_label_textView"
@@ -64,7 +67,7 @@
         android:padding="15dp"
         android:text="@string/amount_label"
         android:textColor="@color/colorBlack"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app2:layout_constraintBottom_toBottomOf="parent"
         app2:layout_constraintStart_toStartOf="parent" />
@@ -76,7 +79,7 @@
         android:layout_marginBottom="24dp"
         android:padding="15dp"
         android:text="@string/default_amount"
-        android:textSize="20sp"
+        android:textSize="22sp"
         android:textStyle="bold"
         app2:layout_constraintBottom_toBottomOf="parent"
         app2:layout_constraintEnd_toStartOf="@+id/addToCart_button"
@@ -94,9 +97,19 @@
         android:padding="15dp"
         android:text="@string/add_to_cart"
         android:textColor="@color/colorWhite"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         app2:layout_constraintBottom_toBottomOf="parent"
         app2:layout_constraintEnd_toEndOf="parent" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="363dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:background="?android:attr/listDivider"
+        app2:layout_constraintEnd_toEndOf="parent"
+        app2:layout_constraintStart_toStartOf="parent"
+        app2:layout_constraintTop_toBottomOf="@+id/price_textView" />
 
 </android.support.constraint.ConstraintLayout>
