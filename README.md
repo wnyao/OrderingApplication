@@ -1,5 +1,5 @@
 # ordering_application
-OrderingApplication
+![screenshot](https://github.com/wnyao/ordering_application/blob/master/screenshots/screenshot.jpg)
 
 ## Description
 Ordering application is a mock up designed based to requirements specified at the below section. Few design elements on this mock up are not entirely build as the requirements described, but closely related.
