@@ -9,15 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".LandingActivity.LandingActivity">
+        <activity
+            android:name=".landing_activity.LandingActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ItemInfoActivity.ItemInfoActivity" />
-        <activity android:name=".CartActivity.CartActivity"></activity>
+        <activity android:name=".item_info_activity.ItemInfoActivity" />
+        <activity android:name=".cart_activity.CartActivity"/>
     </application>
 
 </manifest>

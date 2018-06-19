@@ -1,15 +1,15 @@
-package com.example.kongwenyao.orderingapplication.CartActivity;
+package com.example.kongwenyao.orderingapplication.cart_activity;
 
-import com.example.kongwenyao.orderingapplication.CartItem;
-import com.example.kongwenyao.orderingapplication.R;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.example.kongwenyao.orderingapplication.CartItem;
+import com.example.kongwenyao.orderingapplication.R;
 
 import java.util.LinkedList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.kongwenyao.orderingapplication.CartActivity;
+package com.example.kongwenyao.orderingapplication.cart_activity;
 
 import android.graphics.Canvas;
 import android.support.v7.widget.RecyclerView;

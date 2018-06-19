@@ -1,4 +1,4 @@
-package com.example.kongwenyao.orderingapplication.ItemInfoActivity;
+package com.example.kongwenyao.orderingapplication.item_info_activity;
 
 import android.app.AlertDialog;
 import android.app.Dialog;

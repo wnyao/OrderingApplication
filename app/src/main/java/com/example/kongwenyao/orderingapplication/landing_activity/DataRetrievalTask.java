@@ -1,4 +1,4 @@
-package com.example.kongwenyao.orderingapplication.LandingActivity;
+package com.example.kongwenyao.orderingapplication.landing_activity;
 
 import android.app.Activity;
 import android.os.AsyncTask;

@@ -1,4 +1,4 @@
-package com.example.kongwenyao.orderingapplication.LandingActivity;
+package com.example.kongwenyao.orderingapplication.landing_activity;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,8 +17,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.example.kongwenyao.orderingapplication.CartActivity.CartActivity;
-import com.example.kongwenyao.orderingapplication.ItemInfoActivity.ItemInfoActivity;
+import com.example.kongwenyao.orderingapplication.cart_activity.CartActivity;
+import com.example.kongwenyao.orderingapplication.item_info_activity.ItemInfoActivity;
 import com.example.kongwenyao.orderingapplication.MenuItem;
 import com.example.kongwenyao.orderingapplication.R;
 

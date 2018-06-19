@@ -1,4 +1,4 @@
-package com.example.kongwenyao.orderingapplication.CartActivity;
+package com.example.kongwenyao.orderingapplication.cart_activity;
 
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,7 +18,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.example.kongwenyao.orderingapplication.ItemInfoActivity.ItemInfoActivity;
+import com.example.kongwenyao.orderingapplication.item_info_activity.ItemInfoActivity;
 import com.example.kongwenyao.orderingapplication.R;
 
 import java.util.ArrayList;
