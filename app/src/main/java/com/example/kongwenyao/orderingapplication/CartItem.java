@@ -1,25 +1,21 @@
 package com.example.kongwenyao.orderingapplication;
 
-public class CartItem {
+public class CartItem extends MenuItem {
 
     private int tagNum;
-    private String itemName;
     private int itemAmount;
     private double totalPrice;
 
-    public CartItem(int tagNum, String itemName, int itemAmount, double totalPrice) {
+    public CartItem (int tagNum, String itemName, int itemAmount, double totalPrice) {
+        super();
+        setItemName(itemName);
         this.tagNum = tagNum;
-        this.itemName = itemName;
         this.itemAmount = itemAmount;
         this.totalPrice = totalPrice;
     }
 
     public int getTag() {
         return tagNum;
-    }
-
-    public String getItemName() {
-        return itemName;
     }
 
     public int getItemAmount() {
